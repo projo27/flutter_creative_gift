@@ -1,4 +1,5 @@
 import 'package:creative_gift/colors.dart';
+import 'package:creative_gift/the_gift_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -102,11 +103,20 @@ class HomePage extends StatelessWidget {
                                         CrossAxisAlignment.stretch,
                                     children: <Widget>[
                                       GiftListItem(
-                                          imgSrc: "assets/images/flower_2.png",
-                                          title: "Edible Bouquet",
-                                          type: "Sweet",
-                                          price: 50.0,
-                                          color: ThemeColors.skyBlue),
+                                        imgSrc: "assets/images/flower_2.png",
+                                        title: "Edible Bouquet",
+                                        type: "Sweet",
+                                        price: 50.0,
+                                        color: ThemeColors.skyBlue,
+                                        onPress: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (ctx) =>
+                                                  GiftDetailPage(title : "Edible Bouquet"),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                       GiftListItem(
                                           imgSrc: "assets/images/gift_box.png",
                                           title: "Gift Box Blue",
@@ -154,15 +164,18 @@ class GiftListItem extends StatefulWidget {
 
   String title = "_", type = "-";
 
-  GiftListItem(
-      {Key key,
-      this.color,
-      String this.imgSrc,
-      @required String this.title,
-      @required String this.type,
-      @required double this.price})
-      : super(key: key);
+  GiftListItem({
+    Key key,
+    this.color,
+    String this.imgSrc,
+    @required String this.title,
+    @required String this.type,
+    @required double this.price,
+    VoidCallback this.onPress,
+    
+  }) : super(key: key);
 
+  final VoidCallback onPress;
   @override
   _GiftListItemState createState() => _GiftListItemState();
 }
@@ -178,108 +191,111 @@ class _GiftListItemState extends State<GiftListItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 12),
-      height: 200,
-      margin: EdgeInsets.only(bottom: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        color: this.widget.color ?? ThemeColors.orange,
-      ),
-      child: Material(
-        type: MaterialType.card,
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.elliptical(18, 5),
-          bottomLeft: Radius.elliptical(18, 5),
-          topRight: Radius.circular(20.0),
-          bottomRight: Radius.circular(20.0),
+    return Hero(
+      tag: widget.title,
+      child: Container(
+        padding: EdgeInsets.only(left: 12),
+        height: 200,
+        margin: EdgeInsets.only(bottom: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          color: this.widget.color ?? ThemeColors.orange,
         ),
-        child: InkWell(
+        child: Material(
+          type: MaterialType.card,
+          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.elliptical(18, 5),
             bottomLeft: Radius.elliptical(18, 5),
             topRight: Radius.circular(20.0),
             bottomRight: Radius.circular(20.0),
           ),
-          onTap: () {
-            print("Gift Item ${widget.title} Clicked");
-          },
-          child: Container(
-            padding: EdgeInsets.all(20),
-            color: Colors.transparent,
-            child: Stack(
-              children: <Widget>[
-                /// Gift List Item Image
-                Container(
-                  alignment: Alignment.bottomRight,
-                  child: Image.asset(
-                    widget.imgSrc,
-                    width: 100,
-                    height: 120,
+          child: InkWell(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.elliptical(18, 5),
+              bottomLeft: Radius.elliptical(18, 5),
+              topRight: Radius.circular(20.0),
+              bottomRight: Radius.circular(20.0),
+            ),
+            onTap: widget.onPress ?? null,
+            child: Container(
+              padding: EdgeInsets.all(20),
+              color: Colors.transparent,
+              child: Stack(
+                children: <Widget>[
+                  /// Gift List Item Image
+                  Container(
+                    alignment: Alignment.bottomRight,
+                    child: Image.asset(
+                      widget.imgSrc,
+                      width: 100,
+                      height: 120,
+                    ),
                   ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  Container(
+                    width: MediaQuery.of(context).size.width / 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
 
-                    /// Gift List Item Text
-                    children: <Widget>[
-                      Text(
-                        widget.title,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: ThemeColors.brown,
-                          fontWeight: FontWeight.bold,
+                      /// Gift List Item Text
+                      children: <Widget>[
+                        Text(
+                          widget.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: ThemeColors.brown,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 15),
-                      Text(
-                        "Type : ",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: ThemeColors.brown50,
-                          fontWeight: FontWeight.bold,
+                        SizedBox(height: 15),
+                        Text(
+                          "Type : ",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: ThemeColors.brown50,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Text(
-                        widget.type,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: ThemeColors.brown50,
+                        Text(
+                          widget.type,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: ThemeColors.brown50,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        "\$ ${widget.price}",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: ThemeColors.orange,
-                          fontWeight: FontWeight.bold,
+                        SizedBox(height: 20),
+                        Text(
+                          "\$ ${widget.price}",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: ThemeColors.orange,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _isFavorite = !_isFavorite;
-                      });
-                    },
-                    color: _isFavorite ? ThemeColors.orange : ThemeColors.brown,
-                    splashColor: ThemeColors.orange,
-                    highlightColor: ThemeColors.orange,
-                    iconSize: 20,
-                    icon: Icon(
-                        _isFavorite ? FontAwesome.heart : FontAwesome.heart_o),
-                  ),
-                )
-              ],
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isFavorite = !_isFavorite;
+                        });
+                      },
+                      color:
+                          _isFavorite ? ThemeColors.orange : ThemeColors.brown,
+                      splashColor: ThemeColors.orange,
+                      highlightColor: ThemeColors.orange,
+                      iconSize: 20,
+                      icon: Icon(_isFavorite
+                          ? FontAwesome.heart
+                          : FontAwesome.heart_o),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -331,16 +347,18 @@ class Dots extends StatelessWidget {
     Key key,
     this.isSelected = false,
     this.color,
+    this.size,
   }) : super(key: key);
 
   final bool isSelected;
   final Color color;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     Color isSelectedColor = color ?? ThemeColors.orange50;
     return Container(
-      padding: EdgeInsets.all(3),
+      padding: EdgeInsets.all(size ?? 3),
       decoration: BoxDecoration(
         color: isSelected ? isSelectedColor : Colors.transparent,
         shape: BoxShape.circle,
@@ -363,7 +381,7 @@ class HomePageAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           ButtonAppBar(
-            icon: Icon(FontAwesome5Solid.equals),
+            icon: Icon(FontAwesome5Solid.grip_lines),
           ),
           Expanded(
             flex: 1,
@@ -376,6 +394,7 @@ class HomePageAppBar extends StatelessWidget {
           ButtonAppBar(
             icon: Icon(Icons.shopping_basket),
             isSelected: true,
+            isShowIndicator: true,
           ),
         ],
       ),
@@ -384,11 +403,18 @@ class HomePageAppBar extends StatelessWidget {
 }
 
 class ButtonAppBar extends StatefulWidget {
-  const ButtonAppBar({Key key, @required this.icon, this.isSelected: false})
+  const ButtonAppBar(
+      {Key key,
+      @required this.icon,
+      this.isSelected: false,
+      this.iconColor,
+      this.isShowIndicator})
       : super(key: key);
 
   final Icon icon;
   final bool isSelected;
+  final Color iconColor;
+  final bool isShowIndicator;
 
   @override
   _ButtonAppBarState createState() => _ButtonAppBarState();
@@ -401,19 +427,43 @@ class _ButtonAppBarState extends State<ButtonAppBar> {
   Widget build(BuildContext context) {
     backgroundColor =
         (widget.isSelected) ? ThemeColors.white : Colors.transparent;
-    iconColor = (widget.isSelected) ? ThemeColors.brown : ThemeColors.white;
+    iconColor = (widget.isSelected)
+        ? widget.iconColor ?? ThemeColors.brown
+        : ThemeColors.white;
 
     return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: backgroundColor,
-        ),
-        //color: ThemeColors.white,
-        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-        padding: EdgeInsets.all(15),
-        child: Icon(
-          widget.icon.icon,
-          color: iconColor,
-        ));
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: backgroundColor,
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Stack(
+        children: <Widget>[
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(15),
+              onTap: () {},
+              child: Container(
+                padding: EdgeInsets.all(15),
+                child: Icon(
+                  widget.icon.icon,
+                  color: iconColor,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 30,
+            top: 32,
+            child: Dots(
+              color: ThemeColors.orange,
+              isSelected: widget.isShowIndicator ?? false,
+              size: 4.0,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
