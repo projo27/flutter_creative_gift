@@ -1,7 +1,13 @@
 import 'package:creative_gift/colors.dart';
-import 'package:creative_gift/the_gift_detail.dart';
+import 'package:creative_gift/gift_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+
+import 'colors.dart';
+import 'colors.dart';
+import 'colors.dart';
+import 'widgets/button_app_bar.dart';
+import 'widgets/dots.dart';
 
 void main() => runApp(MyApp());
 
@@ -40,9 +46,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
+    return Scaffold(
+      backgroundColor: ThemeColors.brown,
+      body: SafeArea(
+        child: Container(
           color: ThemeColors.brown,
           width: MediaQuery.of(context).size.width,
           child: Column(
@@ -111,25 +118,45 @@ class HomePage extends StatelessWidget {
                                         onPress: () {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
-                                              builder: (ctx) =>
-                                                  GiftDetailPage(title : "Edible Bouquet"),
+                                              builder: (ctx) => GiftDetailPage(
+                                                  title: "Edible Bouquet",
+                                                  color: ThemeColors.skyBlue),
                                             ),
                                           );
                                         },
                                       ),
                                       GiftListItem(
-                                          imgSrc: "assets/images/gift_box.png",
-                                          title: "Gift Box Blue",
-                                          type: "Unknown",
-                                          price: 10.0,
-                                          color: ThemeColors.orange50),
+                                        imgSrc: "assets/images/gift_box.png",
+                                        title: "Gift Box Blue",
+                                        type: "Unknown",
+                                        price: 10.0,
+                                        color: ThemeColors.orange50,
+                                        onPress: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (ctx) => GiftDetailPage(
+                                                  title: "Gift Box Blue",
+                                                  color: ThemeColors.orange50),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                       GiftListItem(
-                                          imgSrc:
-                                              "assets/images/gift_box_2.png",
-                                          title: "Gift Box Redt",
-                                          type: "Unknown",
-                                          price: 20.0,
-                                          color: ThemeColors.orange),
+                                        imgSrc: "assets/images/gift_box_2.png",
+                                        title: "Gift Box Redt",
+                                        type: "Unknown",
+                                        price: 20.0,
+                                        color: ThemeColors.orange,
+                                        onPress: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (ctx) => GiftDetailPage(
+                                                  title: "Gift Box Redt",
+                                                  color: ThemeColors.orange),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                       GiftListItem(
                                           imgSrc:
                                               "assets/images/gift_box_3.png",
@@ -172,7 +199,6 @@ class GiftListItem extends StatefulWidget {
     @required String this.type,
     @required double this.price,
     VoidCallback this.onPress,
-    
   }) : super(key: key);
 
   final VoidCallback onPress;
@@ -195,7 +221,7 @@ class _GiftListItemState extends State<GiftListItem> {
       tag: widget.title,
       child: Container(
         padding: EdgeInsets.only(left: 12),
-        height: 200,
+        height: 190,
         margin: EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
@@ -228,7 +254,7 @@ class _GiftListItemState extends State<GiftListItem> {
                     alignment: Alignment.bottomRight,
                     child: Image.asset(
                       widget.imgSrc,
-                      width: 100,
+                      width: MediaQuery.of(context).size.width / 5,
                       height: 120,
                     ),
                   ),
@@ -248,7 +274,7 @@ class _GiftListItemState extends State<GiftListItem> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 15),
+                        SizedBox(height: 10),
                         Text(
                           "Type : ",
                           style: TextStyle(
@@ -264,11 +290,11 @@ class _GiftListItemState extends State<GiftListItem> {
                             color: ThemeColors.brown50,
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 15),
                         Text(
                           "\$ ${widget.price}",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 18,
                             color: ThemeColors.orange,
                             fontWeight: FontWeight.bold,
                           ),
@@ -278,20 +304,25 @@ class _GiftListItemState extends State<GiftListItem> {
                   ),
                   Container(
                     alignment: Alignment.topRight,
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _isFavorite = !_isFavorite;
-                        });
-                      },
-                      color:
-                          _isFavorite ? ThemeColors.orange : ThemeColors.brown,
-                      splashColor: ThemeColors.orange,
-                      highlightColor: ThemeColors.orange,
-                      iconSize: 20,
-                      icon: Icon(_isFavorite
-                          ? FontAwesome.heart
-                          : FontAwesome.heart_o),
+                    child: SizedBox(
+                      width: 40,
+                      height: 30,
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isFavorite = !_isFavorite;
+                          });
+                        },
+                        color: _isFavorite
+                            ? ThemeColors.orange
+                            : ThemeColors.brown,
+                        splashColor: ThemeColors.orange,
+                        highlightColor: ThemeColors.orange,
+                        iconSize: 20,
+                        icon: Icon(_isFavorite
+                            ? FontAwesome.heart
+                            : FontAwesome.heart_o),
+                      ),
                     ),
                   )
                 ],
@@ -342,31 +373,6 @@ class TabItem extends StatelessWidget {
   }
 }
 
-class Dots extends StatelessWidget {
-  const Dots({
-    Key key,
-    this.isSelected = false,
-    this.color,
-    this.size,
-  }) : super(key: key);
-
-  final bool isSelected;
-  final Color color;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    Color isSelectedColor = color ?? ThemeColors.orange50;
-    return Container(
-      padding: EdgeInsets.all(size ?? 3),
-      decoration: BoxDecoration(
-        color: isSelected ? isSelectedColor : Colors.transparent,
-        shape: BoxShape.circle,
-      ),
-    );
-  }
-}
-
 class HomePageAppBar extends StatelessWidget {
   const HomePageAppBar({
     Key key,
@@ -392,76 +398,14 @@ class HomePageAppBar extends StatelessWidget {
             icon: Icon(Icons.search),
           ),
           ButtonAppBar(
-            icon: Icon(Icons.shopping_basket),
+            icon: Icon(
+              Icons.shopping_basket,
+              color: ThemeColors.brown,
+            ),
             isSelected: true,
             isShowIndicator: true,
+            backgroundColor: ThemeColors.white,
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class ButtonAppBar extends StatefulWidget {
-  const ButtonAppBar(
-      {Key key,
-      @required this.icon,
-      this.isSelected: false,
-      this.iconColor,
-      this.isShowIndicator})
-      : super(key: key);
-
-  final Icon icon;
-  final bool isSelected;
-  final Color iconColor;
-  final bool isShowIndicator;
-
-  @override
-  _ButtonAppBarState createState() => _ButtonAppBarState();
-}
-
-class _ButtonAppBarState extends State<ButtonAppBar> {
-  Color backgroundColor, iconColor;
-
-  @override
-  Widget build(BuildContext context) {
-    backgroundColor =
-        (widget.isSelected) ? ThemeColors.white : Colors.transparent;
-    iconColor = (widget.isSelected)
-        ? widget.iconColor ?? ThemeColors.brown
-        : ThemeColors.white;
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: backgroundColor,
-      ),
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      child: Stack(
-        children: <Widget>[
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(15),
-              onTap: () {},
-              child: Container(
-                padding: EdgeInsets.all(15),
-                child: Icon(
-                  widget.icon.icon,
-                  color: iconColor,
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 30,
-            top: 32,
-            child: Dots(
-              color: ThemeColors.orange,
-              isSelected: widget.isShowIndicator ?? false,
-              size: 4.0,
-            ),
-          )
         ],
       ),
     );
