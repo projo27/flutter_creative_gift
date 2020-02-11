@@ -28,7 +28,7 @@ class ThemeColors {
     brown,
   ];
 
-  static List<Color> colorCategories = colorList.getRange(2, 6).toList();
+  static List<Color> colorCategories = colorList.getRange(1, 7).toList();
 
   static Color secondColor(Color color) {
     if (color == skyBlue) return skyBlue50;
