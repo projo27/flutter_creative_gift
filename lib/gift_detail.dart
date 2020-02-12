@@ -232,11 +232,10 @@ class _GiftDetailPageState extends State<GiftDetailPage> {
                                     children: <Widget>[
                                       Row(
                                         mainAxisSize: MainAxisSize.max,
-                                        // mainAxisAlignment:
-                                        //     MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Icon(
                                             Icons.palette,
+                                            color: ThemeColors.brown50,
                                             size: 16,
                                           ),
                                           Text(
@@ -434,6 +433,13 @@ class AppBarButton extends StatelessWidget {
             icon: Icon(FontAwesome.heart_o, color: ThemeColors.brown),
             selectedIcon: Icon(FontAwesome.heart, color: ThemeColors.orange),
             isSelected: false,
+            backgroundColor: ThemeColors.white,
+          ),
+          ButtonAppBar(
+            icon: Icon(Icons.shopping_basket, color: ThemeColors.brown),
+            selectedIcon: Icon(Icons.shopping_basket, color: ThemeColors.orange),
+            isSelected: false,
+            isShowIndicator: true,
             backgroundColor: ThemeColors.white,
           ),
         ],

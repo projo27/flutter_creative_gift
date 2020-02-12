@@ -63,30 +63,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Container(
-        width: MediaQuery.of(context).size.width - 50,
-        color: ThemeColors.brown75,
-        child: SafeArea(
-          child: Material(
-            color: Colors.transparent,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.topRight,
-                  // padding: EdgeInsets.only(right: 20, top: 20),
-                  child: IconButton(
-                    icon: Icon(Icons.close),
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+      drawer: TheDrawer(),
       backgroundColor: ThemeColors.brown,
       body: SafeArea(
         child: Container(
@@ -278,6 +255,113 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+class TheDrawer extends StatelessWidget {
+  const TheDrawer({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width - 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+        color: ThemeColors.brown75,
+      ),
+      height: 500,
+      child: Material(
+        color: Colors.transparent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.topRight,
+              // padding: EdgeInsets.only(right: 20, top: 20),
+              child: IconButton(
+                icon: Icon(Icons.close),
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: ThemeColors.skyBlue,
+                      boxShadow: [
+                        BoxShadow(
+                          color: ThemeColors.black50,
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Icon(Icons.person, size: 50, color: Colors.white),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("John Doe",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text("john.doe@example.com"),
+                      OutlineButton.icon(
+                        color: Colors.white,
+                        icon: Icon(
+                          FontAwesome.pencil,
+                          size: 15,
+                          color: Colors.white,
+                        ),
+                        label: Text("Edit",
+                            style:
+                                TextStyle(fontSize: 10, color: Colors.white)),
+                        borderSide: BorderSide(color: Colors.white),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        onPressed: () {},
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Flexible(child: Container()),
+            Container(
+              height: 60,
+              padding: EdgeInsets.only(top: 10, bottom: 15),
+              child: OutlineButton.icon(
+                color: Colors.white,
+                padding: EdgeInsets.only(left: 40, right: 40),
+                icon: Icon(AntDesign.logout, color: Colors.white),
+                label: Text("Logout", style: TextStyle(color: Colors.white)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                borderSide: BorderSide(color: Colors.white, width: 1),
+                onPressed: () {},
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class GiftListItem extends StatefulWidget {
   Color color;
   String imgSrc = "assets/images/gift_box.png";
@@ -449,7 +533,6 @@ class HomePageAppBar extends StatelessWidget {
             icon: Icon(FontAwesome5Solid.grip_lines),
             onPress: () {
               Scaffold.of(context).openDrawer();
-              print("Menu Clicked");
             },
           ),
           Expanded(
